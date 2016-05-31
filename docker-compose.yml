@@ -1,0 +1,12 @@
+version: '2'
+services:
+    db:
+        image: mysql
+        volumes:
+            - ./:/global
+            - ./provision/my.cnf:/etc/mysql/my.cnf
+        ports:
+            - '3306:3306'
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_USER=root
