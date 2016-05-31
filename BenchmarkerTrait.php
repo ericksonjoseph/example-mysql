@@ -2,7 +2,9 @@
 
 trait BenchmarkerTrait {
 
-    private $logfile;
+    private static $LOG_STAMPS = false;
+
+    private $logfile = STAT_LOG;
 
     private $timeStamps = [];
 
@@ -12,14 +14,16 @@ trait BenchmarkerTrait {
     {
         $t = $this->getMicrotime();
         $this->timeStamps[] = $t;
-        $this->log($note . $t);
+        if (self::$LOG_STAMPS)
+            $this->log($note . $t);
     }
 
     public function stampMemory($note = '')
     {
         $t = $this->getMemoryUsage();
         $this->memoryStamps[] = $t;
-        $this->log($note . $this->convert($t));
+        if (self::$LOG_STAMPS)
+            $this->log($note . $this->convert($t));
     }
 
     private function getMemoryPeakUsage($float = true)
@@ -52,7 +56,6 @@ trait BenchmarkerTrait {
     private function log($msg){
         global $argv;
 
-        $this->logfile = './stats.txt';
 
         $fmsg = $msg . PHP_EOL;
         file_put_contents($this->logfile, $fmsg, FILE_APPEND);
@@ -62,7 +65,10 @@ trait BenchmarkerTrait {
     {
         $totalMemory = end($this->memoryStamps) - reset($this->memoryStamps);
         $totalTime = end($this->timeStamps) - reset($this->timeStamps);
+        $this->log('Date Run: ' . $this->getDateTime());
         $this->log('Time: ' . $totalTime);
         $this->log('Memory: ' . $this->convert($totalMemory));
+        $this->log('memory (peak): ' . $this->convert($this->getmemorypeakusage()));
+        $this->log(PHP_EOL);
     }
 }

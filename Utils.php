@@ -56,7 +56,7 @@ class Utils {
      * @param boolean $transaction - use a transaction?
      * @return boolean TRUE on success. FALSE on failure.
      */
-    function insert(array $data, $transaction = false){
+    function insertBatch(array $data, $transaction = false){
 
         //Will contain SQL snippets.
         $rowsSQL = array();

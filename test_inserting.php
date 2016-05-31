@@ -18,4 +18,11 @@ if (isset($opts['t'])){
 
 $T = new Tester($opts);
 
+$T->stampTime();
+$T->stampMemory();
+
 $T->runTest();
+
+$T->stampTime();
+$T->stampMemory();
+

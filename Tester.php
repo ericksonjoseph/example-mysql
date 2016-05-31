@@ -20,13 +20,19 @@ class Tester {
 
         echo 'inserting ' . count($newData) . PHP_EOL;
 
+        $this->stampTime();
+        $this->stampMemory();
+
         $U = new Utils($PDO);
 
         // Decide which method to use
-        $method = (isset($opts['b'])) ? 'insert' : 'insertLoop';
+        $method = (isset($opts['b'])) ? 'insertBatch' : 'insertLoop';
 
         // Decide if we should use a transaction
         $t = isset($opts['t']);
+        $wt = $t ? ' using Transaction' : '';
+
+        $this->log("Test Case $method$wt");
 
         // Run
         if($U->$method($newData, $t)){
@@ -34,6 +40,9 @@ class Tester {
         } else {
             echo "$method Failed";
         }
+
+        $this->stampTime();
+        $this->stampMemory();
     }
 
     private function prepareData()
